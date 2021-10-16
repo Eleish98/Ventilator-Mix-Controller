@@ -106,10 +106,10 @@ static uint32_t u32ReadAirOxygenPressure(uint8_t SensorID){
 }
 
 
-#if 0
+
 uint32_t u32ReadTemp(uint8_t SensorID)
 {
-    uint8_t SensorI2C = PressureI2Cs[SensorID];
+    uint8_t SensorI2C = I2C_3;
     uint8_t command[] = {9};
     uint32_t u32ReadValue = 0;
     uint32_t u32Temp = 0xFFFFFFFF;
@@ -143,4 +143,4 @@ uint32_t u32ReadTemp(uint8_t SensorID)
 
     return u32Temp;
 }
-#endif
+

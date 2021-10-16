@@ -14,6 +14,6 @@
 #define PRESSURE_SENSOR_TANK        2
 
 uint32_t u32ReadPressure(uint8_t SensorID);
-
+uint32_t u32ReadTemp(uint8_t SensorID);
 
 #endif /* HAL_PRESSURE_SENSOR_PRESSURE_SENSOR_H_ */

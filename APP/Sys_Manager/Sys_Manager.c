@@ -61,7 +61,7 @@ uint32_t Stub_EnteredOxygenRatio(void)
 uint32_t Stub_ReadOxygenSensor(void)
 {
     uint32_t OxygenSensor = 0;
-
+    OxygenSensor = ReadOxygenSensor();
     return OxygenSensor;
 }
 
@@ -77,27 +77,27 @@ void Stub_MixReadyPin(bool bMixReady)
 
 }
 /*************************************************************************/
-#define BOX_VOLUME 16u
-#define FINAL_BOX_PRESSURE 250u
-#define OXYGEN_GAS_CONSTANT 259u
-#define NITROGEN_GAS_CONSTANT 297u
-#define AIR_GAS_CONSTANT 287u
-#define MUTI_100000 100000u
-#define MUTI_1000 1000u
-#define KELVIN_CONVERT 27315u
-#define MUTI_100 100u
-#define GAUGE_TO_ABS 100u
-#define SOURCE_PRESSURE 500
-#define VALVE_FLOW 266u   /*160 /1000 then / 60 = .0026666 then multiple 100000*/
+#define BOX_VOLUME                  16u
+#define FINAL_BOX_PRESSURE          250u
+#define OXYGEN_GAS_CONSTANT         259u
+#define NITROGEN_GAS_CONSTANT       297u
+#define AIR_GAS_CONSTANT            287u
+#define MUTI_100000                 100000u
+#define MUTI_1000                   1000u
+#define KELVIN_CONVERT              27315u
+#define MUTI_100                    100u
+#define GAUGE_TO_ABS                100u
+#define SOURCE_PRESSURE             500
+#define VALVE_FLOW                  266u   /*160 /1000 then / 60 = .0026666 then multiple 100000*/
 
-#define PRESSURE_UP 250u
-#define PRESSURE_MID 240u
-#define PRESSURE_DOWN 150u
-#define PRESSURE_DOWN_LIMIT 120u
+#define PRESSURE_UP                 250u
+#define PRESSURE_MID                240u
+#define PRESSURE_DOWN               150u
+#define PRESSURE_DOWN_LIMIT         120u
 
-#define OXYGEN_REFILL_MARGIN 5u
-#define OXYGEN_STOP_MARGIN 10u
-#if 0
+#define OXYGEN_REFILL_MARGIN        5u
+#define OXYGEN_STOP_MARGIN          10u
+
 void SCH_vidSysManager(void)
 {
    uint32_t u32Pressure;
@@ -139,8 +139,8 @@ void SCH_vidSysManager(void)
   case VALVES_SETTING:
       /*Read sensors*/
       u32ReadOxygenRatio = Stub_ReadOxygenSensor();
-      u32Pressure = u32ReadPressure();
-      u32Tempreture =  u32ReadTemp();
+      u32Pressure = u32ReadPressure(PRESSURE_SENSOR_TANK);
+      u32Tempreture =  u32ReadTemp(PRESSURE_SENSOR_TANK);
 
       /*Mass of oxygen with needed ratio in pressure 2.5bar*/
       TargetOxygenMass = (BOX_VOLUME*FINAL_BOX_PRESSURE*u32WantedOxygenRatio*MUTI_1000)
@@ -207,7 +207,7 @@ void SCH_vidSysManager(void)
       {
           /*Check Oxygen and pressure values*/
           u32ReadOxygenRatio = Stub_ReadOxygenSensor();
-          u32Pressure = u32ReadPressure();
+          u32Pressure = u32ReadPressure(PRESSURE_SENSOR_TANK);
           if((u32ReadOxygenRatio < (u32WantedOxygenRatio+OXYGEN_REFILL_MARGIN))
             &&(u32ReadOxygenRatio > (u32WantedOxygenRatio-OXYGEN_REFILL_MARGIN))
             &&(u32Pressure <= PRESSURE_UP)
@@ -231,7 +231,7 @@ void SCH_vidSysManager(void)
        *5- Open valves and move to TANK_FILLING*/
       /*Check Oxygen and pressure values*/
       u32ReadOxygenRatio = Stub_ReadOxygenSensor();
-      u32Pressure = u32ReadPressure();
+      u32Pressure = u32ReadPressure(PRESSURE_SENSOR_TANK);
       if((u32Pressure < PRESSURE_DOWN_LIMIT)
         ||(u32ReadOxygenRatio < (u32WantedOxygenRatio-OXYGEN_STOP_MARGIN))
         ||(u32ReadOxygenRatio > (u32WantedOxygenRatio+OXYGEN_STOP_MARGIN)))
@@ -269,5 +269,5 @@ void SCH_vidSysManager(void)
 
 }
 
-#endif
+
 
